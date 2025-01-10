@@ -3,8 +3,6 @@ const { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou
 
 const router = express.Router();
 
-router.get("/stories", getStories);
-
 router.get("/stories/continue-reading", getContinueReading);
 
 router.get("/stories/featured", getFeaturedStories);
