@@ -83,22 +83,50 @@ const getFeaturedStories = async (req, res) => {
 };
 
 // Fetch "Recommended For You" stories
+
 const getRecommendedForYou = async (req, res) => {
     try {
-        const recommendedStories = await Story.find({ category: "recommended" });
-        res.json({
+        // Fetch the recommended stories and populate the `author` field using `userId`
+        const recommendedStories = await Story.find({ category: "recommended" })
+            .populate('userId', 'username')  // Populate the `username` from the `User` model
+            .exec();
+
+        // Map the recommended stories to the response format
+        const response = {
             title: "Recommend For You",
             description: "Personalized picks based on your reading history",
             books: recommendedStories.map(story => ({
                 title: story.title,
-                author: story.author,
+                author: story.userId.username,  // Access the `username` from the populated `userId`
                 image: story.image,
             })),
-        });
+        };
+
+        // Send the response
+        res.json(response);
     } catch (error) {
+        // Handle error
         res.status(500).json({ message: "Error fetching recommended stories", error: error.message });
     }
 };
 
 
-module.exports = { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou };
+// Fetch stories written by a specific user
+const getUserStories = async (req, res) => {
+    try {
+        const { userId } = req.params;  // Get the userId from the request params
+
+        // Find stories that belong to the user
+        const stories = await Story.find({ userId });
+
+        if (stories.length === 0) {
+            return res.status(404).json({ message: "No stories found for this user" });
+        }
+
+        res.status(200).json({ stories });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching user stories", error: error.message });
+    }
+};
+
+module.exports = { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories };
