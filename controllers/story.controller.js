@@ -226,4 +226,59 @@ const getUserStories = async (req, res) => {
     }
 };
 
-module.exports = { getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories };
+const getAllStories = async (req, res) => {
+    try {
+        const stories = await Story.find()
+            .populate('author', 'username avatar bio followersCount booksPublished totalReads');  // Populate author details
+
+        if (stories.length === 0) {
+            return res.status(404).json({ message: "No stories found" });
+        }
+
+        res.status(200).json({
+            stories: stories.map(story => ({
+                id: story._id,
+                title: story.title,
+                cover: story.cover || defaultCoverImage,  // Use default image if cover is not available
+                author: {
+                    id: story.author._id,
+                    name: story.author.username,
+                    avatar: story.author.avatar || defaultCoverImage,  // Use default avatar if not available
+                    bio: story.author.bio,
+                    followersCount: story.author.followersCount,
+                    booksPublished: story.author.booksPublished,
+                    totalReads: story.author.totalReads,
+                },
+                synopsis: story.synopsis,
+                status: story.status,
+                genres: story.genres,
+                tags: story.tags,
+                metrics: {
+                    reads: story.metrics.reads,
+                    likes: story.metrics.likes,
+                    comments: story.metrics.comments,
+                    shares: story.metrics.shares,
+                },
+                chapters: story.chapters.map(chapter => ({
+                    id: chapter._id,
+                    title: chapter.title,
+                    number: chapter.number,
+                    readStatus: chapter.readStatus,
+                    publishedAt: chapter.publishedAt,
+                })),
+                isBookmarked: story.isBookmarked,
+                isLiked: story.isLiked,
+                rating: story.rating,
+                publishedAt: story.publishedAt,
+                lastUpdated: story.lastUpdated,
+                language: story.language,
+                maturityRating: story.maturityRating,
+                wordCount: story.wordCount,
+            })),
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching stories", error: error.message });
+    }
+};
+
+module.exports = { getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories, getAllStories };
