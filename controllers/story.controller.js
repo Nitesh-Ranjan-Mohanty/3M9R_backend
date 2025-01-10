@@ -1,21 +1,54 @@
 const Story = require("../models/story.model");
 
-const defaultImage = "https://picsum.photos/200"; // Default image URL (Lorem Picsum)
+// Default cover image if not provided
+const defaultCoverImage = "https://via.placeholder.com/500x750?text=Lorem+Ipsum";
 
 // Fetch "Continue Reading" stories
 const getContinueReading = async (req, res) => {
     try {
         const continueReading = await Story.find({ category: "continue" })
-            .populate('author', 'username avatar');  // Populate author details
+            .populate('author', 'username avatar bio followersCount booksPublished totalReads');  // Populate author details
 
         res.json({
             title: "Continue Reading",
             stories: continueReading.map(story => ({
+                id: story._id,
                 title: story.title,
-                chapter: story.chapters,  // Assuming chapters is an array; adjust as necessary
-                timeAgo: story.timeAgo,  // Adjust according to your data structure
-                image: story.cover || defaultImage,  // Use default image if cover is not available
-                author: story.author.username,  // Include the author's username
+                cover: story.cover || defaultCoverImage,  // Use default image if cover is not available
+                author: {
+                    id: story.author._id,
+                    name: story.author.username,
+                    avatar: story.author.avatar || defaultCoverImage,  // Use default avatar if not available
+                    bio: story.author.bio,
+                    followersCount: story.author.followersCount,
+                    booksPublished: story.author.booksPublished,
+                    totalReads: story.author.totalReads,
+                },
+                synopsis: story.synopsis,
+                status: story.status,
+                genres: story.genres,
+                tags: story.tags,
+                metrics: {
+                    reads: story.metrics.reads,
+                    likes: story.metrics.likes,
+                    comments: story.metrics.comments,
+                    shares: story.metrics.shares,
+                },
+                chapters: story.chapters.map(chapter => ({
+                    id: chapter._id,
+                    title: chapter.title,
+                    number: chapter.number,
+                    readStatus: chapter.readStatus,
+                    publishedAt: chapter.publishedAt,
+                })),
+                isBookmarked: story.isBookmarked,
+                isLiked: story.isLiked,
+                rating: story.rating,
+                publishedAt: story.publishedAt,
+                lastUpdated: story.lastUpdated,
+                language: story.language,
+                maturityRating: story.maturityRating,
+                wordCount: story.wordCount,
             })),
         });
     } catch (error) {
@@ -27,17 +60,49 @@ const getContinueReading = async (req, res) => {
 const getFeaturedStories = async (req, res) => {
     try {
         const featuredStories = await Story.find({ category: "featured" })
-            .populate('author', 'username avatar');  // Populate author details
+            .limit(5)  // Limit to 5 records
+            .populate('author', 'username avatar bio followersCount booksPublished totalReads');  // Populate author details
 
         res.json({
             title: "Featured Stories",
             stories: featuredStories.map(story => ({
+                id: story._id,
                 title: story.title,
-                author: story.author.username,  // Include author's username
+                cover: story.cover || defaultCoverImage,  // Use default image if cover is not available
+                author: {
+                    id: story.author._id,
+                    name: story.author.username,
+                    avatar: story.author.avatar || defaultCoverImage,  // Use default avatar if not available
+                    bio: story.author.bio,
+                    followersCount: story.author.followersCount,
+                    booksPublished: story.author.booksPublished,
+                    totalReads: story.author.totalReads,
+                },
+                synopsis: story.synopsis,
+                status: story.status,
+                genres: story.genres,
+                tags: story.tags,
+                metrics: {
+                    reads: story.metrics.reads,
+                    likes: story.metrics.likes,
+                    comments: story.metrics.comments,
+                    shares: story.metrics.shares,
+                },
+                chapters: story.chapters.map(chapter => ({
+                    id: chapter._id,
+                    title: chapter.title,
+                    number: chapter.number,
+                    readStatus: chapter.readStatus,
+                    publishedAt: chapter.publishedAt,
+                })),
+                isBookmarked: story.isBookmarked,
+                isLiked: story.isLiked,
                 rating: story.rating,
-                image: story.cover || defaultImage,  // Use default image if cover is not available
-                views: story.metrics.reads,  // Assuming 'metrics.reads' for views
-                comments: story.metrics.comments,  // Assuming 'metrics.comments' for comments
+                publishedAt: story.publishedAt,
+                lastUpdated: story.lastUpdated,
+                language: story.language,
+                maturityRating: story.maturityRating,
+                wordCount: story.wordCount,
             })),
         });
     } catch (error) {
@@ -48,26 +113,56 @@ const getFeaturedStories = async (req, res) => {
 // Fetch "Recommended For You" stories
 const getRecommendedForYou = async (req, res) => {
     try {
-        // Fetch the recommended stories and populate the `author` field using `userId`
         const recommendedStories = await Story.find({ category: "recommended" })
-            .populate('userId', 'username avatar')  // Populate the `username` from the `User` model
+            .populate('userId', 'username avatar bio followersCount booksPublished totalReads')  // Populate the `username` from the `User` model
             .exec();
 
-        // Map the recommended stories to the response format
         const response = {
-            title: "Recommend For You",
+            title: "Recommended For You",
             description: "Personalized picks based on your reading history",
             books: recommendedStories.map(story => ({
+                id: story._id,
                 title: story.title,
-                author: story.userId.username,  // Access the `username` from the populated `userId`
-                image: story.cover || defaultImage,  // Use default image if cover is not available
+                cover: story.cover || defaultCoverImage,  // Use default image if cover is not available
+                author: {
+                    id: story.userId._id,
+                    name: story.userId.username,
+                    avatar: story.userId.avatar || defaultCoverImage,  // Use default avatar if not available
+                    bio: story.userId.bio,
+                    followersCount: story.userId.followersCount,
+                    booksPublished: story.userId.booksPublished,
+                    totalReads: story.userId.totalReads,
+                },
+                synopsis: story.synopsis,
+                status: story.status,
+                genres: story.genres,
+                tags: story.tags,
+                metrics: {
+                    reads: story.metrics.reads,
+                    likes: story.metrics.likes,
+                    comments: story.metrics.comments,
+                    shares: story.metrics.shares,
+                },
+                chapters: story.chapters.map(chapter => ({
+                    id: chapter._id,
+                    title: chapter.title,
+                    number: chapter.number,
+                    readStatus: chapter.readStatus,
+                    publishedAt: chapter.publishedAt,
+                })),
+                isBookmarked: story.isBookmarked,
+                isLiked: story.isLiked,
+                rating: story.rating,
+                publishedAt: story.publishedAt,
+                lastUpdated: story.lastUpdated,
+                language: story.language,
+                maturityRating: story.maturityRating,
+                wordCount: story.wordCount,
             })),
         };
 
-        // Send the response
         res.json(response);
     } catch (error) {
-        // Handle error
         res.status(500).json({ message: "Error fetching recommended stories", error: error.message });
     }
 };
@@ -79,7 +174,7 @@ const getUserStories = async (req, res) => {
 
         // Find stories that belong to the user
         const stories = await Story.find({ userId })
-            .populate('author', 'username avatar');  // Populate author details
+            .populate('author', 'username avatar bio followersCount booksPublished totalReads');  // Populate author details
 
         if (stories.length === 0) {
             return res.status(404).json({ message: "No stories found for this user" });
@@ -87,11 +182,43 @@ const getUserStories = async (req, res) => {
 
         res.status(200).json({
             stories: stories.map(story => ({
+                id: story._id,
                 title: story.title,
-                author: story.author.username,  // Include author's username
-                rating: story.rating,
-                image: story.cover || defaultImage,  // Use default image if cover is not available
+                cover: story.cover || defaultCoverImage,  // Use default image if cover is not available
+                author: {
+                    id: story.author._id,
+                    name: story.author.username,
+                    avatar: story.author.avatar || defaultCoverImage,  // Use default avatar if not available
+                    bio: story.author.bio,
+                    followersCount: story.author.followersCount,
+                    booksPublished: story.author.booksPublished,
+                    totalReads: story.author.totalReads,
+                },
+                synopsis: story.synopsis,
                 status: story.status,
+                genres: story.genres,
+                tags: story.tags,
+                metrics: {
+                    reads: story.metrics.reads,
+                    likes: story.metrics.likes,
+                    comments: story.metrics.comments,
+                    shares: story.metrics.shares,
+                },
+                chapters: story.chapters.map(chapter => ({
+                    id: chapter._id,
+                    title: chapter.title,
+                    number: chapter.number,
+                    readStatus: chapter.readStatus,
+                    publishedAt: chapter.publishedAt,
+                })),
+                isBookmarked: story.isBookmarked,
+                isLiked: story.isLiked,
+                rating: story.rating,
+                publishedAt: story.publishedAt,
+                lastUpdated: story.lastUpdated,
+                language: story.language,
+                maturityRating: story.maturityRating,
+                wordCount: story.wordCount,
             }))
         });
     } catch (error) {
