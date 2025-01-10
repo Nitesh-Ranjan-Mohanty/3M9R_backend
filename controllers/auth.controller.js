@@ -24,10 +24,10 @@ const signup = async (req, res) => {
 // Login endpoint (for development, no encryption)
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
 
         // Find user by email
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
