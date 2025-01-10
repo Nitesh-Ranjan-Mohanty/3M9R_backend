@@ -239,7 +239,7 @@ const seedData = async () => {
                 id: 7,
                 title: "Fate's Gambit",
                 cover: "https://images.unsplash.com/photo-1518709766631-a6a7f45921c3",
-                author: dummyUserId4,
+                author: dummyUserId2,
                 synopsis: "In a world where fate can be controlled, a young woman battles destiny for her freedom.",
                 status: "ongoing",
                 genres: ["Fantasy", "Adventure"],
@@ -262,7 +262,7 @@ const seedData = async () => {
                 language: "English",
                 maturityRating: "Teen",
                 wordCount: 38000,
-                userId: dummyUserId4,
+                userId: dummyUserId2,
                 category: "recommended"
             },
             {
@@ -329,7 +329,7 @@ const seedData = async () => {
                 id: 10,
                 title: "The Phoenix War",
                 cover: "https://images.unsplash.com/photo-1518709766631-a6a7f45921c3",
-                author: dummyUserId7,
+                author: dummyUserId2,
                 synopsis: "A legend of an ancient war reborn in the modern world, threatening to destroy everything.",
                 status: "completed",
                 genres: ["Fantasy", "Action", "Adventure"],
@@ -352,7 +352,7 @@ const seedData = async () => {
                 language: "English",
                 maturityRating: "Adult",
                 wordCount: 70000,
-                userId: dummyUserId7,
+                userId: dummyUserId2,
                 category: "recommended"
             },
             {
