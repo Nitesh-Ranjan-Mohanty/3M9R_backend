@@ -9,4 +9,6 @@ router.get("/stories/continue-reading", getContinueReading);
 
 router.get("/stories/featured", getFeaturedStories);
 
+router.get("/stories/recommended", getRecommendedForYou);
+
 module.exports = router;

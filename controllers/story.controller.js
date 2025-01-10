@@ -82,6 +82,23 @@ const getFeaturedStories = async (req, res) => {
     }
 };
 
+// Fetch "Recommended For You" stories
+const getRecommendedForYou = async (req, res) => {
+    try {
+        const recommendedStories = await Story.find({ category: "recommended" });
+        res.json({
+            title: "Recommend For You",
+            description: "Personalized picks based on your reading history",
+            books: recommendedStories.map(story => ({
+                title: story.title,
+                author: story.author,
+                image: story.image,
+            })),
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching recommended stories", error: error.message });
+    }
+};
 
 
-module.exports = { getStories, getContinueReading, getFeaturedStories };
+module.exports = { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou };
