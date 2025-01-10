@@ -1,5 +1,5 @@
 const express = require("express");
-const { getStories, getContinueReading, getFeaturedStories } = require("../controllers/story.controller");
+const { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou } = require("../controllers/story.controller");
 
 const router = express.Router();
 
