@@ -71,7 +71,7 @@ const getFeaturedStories = async (req, res) => {
                 cover: story.cover || defaultCoverImage,  // Use default image if cover is not available
                 author: {
                     id: story.author._id,
-                    name: story.author.username,
+                    name: story.author.username?.name,
                     avatar: story.author.avatar || defaultCoverImage,  // Use default avatar if not available
                     bio: story.author.bio,
                     followersCount: story.author.followersCount,
