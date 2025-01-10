@@ -62,5 +62,26 @@ const getContinueReading = async (req, res) => {
     }
 };
 
+// Fetch "Featured Stories"
+const getFeaturedStories = async (req, res) => {
+    try {
+        const featuredStories = await Story.find({ category: "featured" });
+        res.json({
+            title: "Featured Stories",
+            stories: featuredStories.map(story => ({
+                title: story.title,
+                author: story.author,
+                rating: story.rating,
+                image: story.image,
+                views: story.views,
+                comments: story.comments,
+            })),
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching featured stories", error: error.message });
+    }
+};
 
-module.exports = { getStories, getContinueReading };
+
+
+module.exports = { getStories, getContinueReading, getFeaturedStories };
