@@ -1,5 +1,6 @@
 const express = require("express");
-const { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories, getAllStories } = require("../controllers/story.controller");
+const { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
+    getAllStories, createStory, addChapter, getChaptersByStoryId } = require("../controllers/story.controller");
 
 const router = express.Router();
 
@@ -12,6 +13,13 @@ router.get("/stories/recommended", getRecommendedForYou);
 router.get("/stories/user/:userId", getUserStories);
 
 router.get("/stories/getall", getAllStories);
+
+router.post("/stories", createStory);
+
+router.post("/stories/:storyId/chapters", addChapter);
+// Route to get chapters by story ID
+router.get("/stories/:storyId/chapters", getChaptersByStoryId);
+
 
 
 module.exports = router;

@@ -281,4 +281,113 @@ const getAllStories = async (req, res) => {
     }
 };
 
-module.exports = { getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories, getAllStories };
+
+
+// Controller to write a new story
+const createStory = async (req, res) => {
+    try {
+        const {
+            id,
+            category,
+            title,
+            cover,
+            author,
+            synopsis,
+            status,
+            genres,
+            tags,
+            metrics,
+            chapters,
+            rating,
+            publishedAt,
+            lastUpdated,
+            language,
+            maturityRating,
+            wordCount,
+            userId
+        } = req.body;
+
+        const newStory = new Story({
+            id,
+            category,
+            title,
+            cover,
+            author,
+            synopsis,
+            status,
+            genres,
+            tags,
+            metrics: metrics || {
+                reads: 0,
+                likes: 0,
+                comments: 0,
+                shares: 0,
+            },
+            chapters: chapters || [],
+            rating,
+            publishedAt: publishedAt || new Date(),
+            lastUpdated: lastUpdated || new Date(),
+            language,
+            maturityRating,
+            wordCount,
+            userId,
+        });
+
+        const savedStory = await newStory.save();
+        res.status(201).json({ success: true, story: savedStory });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// Controller to add a chapter to a story
+const addChapter = async (req, res) => {
+    try {
+        const { storyId } = req.params;
+        const { id, title, number, content, readStatus, publishedAt } = req.body;
+
+        const story = await Story.findById(storyId);
+        if (!story) {
+            return res.status(404).json({ success: false, message: "Story not found" });
+        }
+
+        const newChapter = {
+            id,
+            title,
+            number,
+            content,
+            readStatus,
+            publishedAt: publishedAt || new Date(),
+        };
+
+        story.chapters.push(newChapter);
+        story.lastUpdated = new Date(); // Update the lastUpdated field
+
+        const updatedStory = await story.save();
+        res.status(200).json({ success: true, story: updatedStory });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const getChaptersByStoryId = async (req, res) => {
+    try {
+        const { storyId } = req.params;
+
+        // Find the story by ID
+        const story = await Story.findById(storyId);
+        if (!story) {
+            return res.status(404).json({ success: false, message: "Story not found" });
+        }
+
+        // Return the chapters of the story
+        res.status(200).json({ success: true, chapters: story.chapters });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+module.exports = {
+    getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
+    getAllStories, addChapter, createStory, getChaptersByStoryId
+};

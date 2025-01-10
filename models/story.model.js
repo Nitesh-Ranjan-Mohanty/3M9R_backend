@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const storySchema = new mongoose.Schema({
     id: { type: Number, required: true },
-    category: { type: String},
+    category: { type: String },
     title: { type: String, required: true },
     cover: { type: String, required: true },
     author: {
@@ -25,6 +25,7 @@ const storySchema = new mongoose.Schema({
         title: { type: String, required: true },
         number: { type: Number, required: true },
         readStatus: { type: Boolean, required: true },
+        content: { type: String, required: true },
         publishedAt: { type: Date, required: true }
     }],
     isBookmarked: { type: Boolean, default: false },
