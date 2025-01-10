@@ -15,6 +15,27 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    // Author-related fields
+    avatar: {
+        type: String,
+        required: true,
+    },
+    bio: {
+        type: String,
+        required: true,
+    },
+    followersCount: {
+        type: Number,
+        default: 0,
+    },
+    booksPublished: {
+        type: Number,
+        default: 0,
+    },
+    totalReads: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const User = mongoose.model("User", userSchema);
