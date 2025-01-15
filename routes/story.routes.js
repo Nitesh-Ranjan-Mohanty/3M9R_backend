@@ -1,6 +1,6 @@
 const express = require("express");
 const { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
-    getAllStories, createStory, addChapter, getChaptersByStoryId,getStoryById
+    getAllStories, createStory, addChapter, getChaptersByStoryId, getStoryById, editStory
     } = require("../controllers/story.controller");
 
 const router = express.Router();
