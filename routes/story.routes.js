@@ -1,6 +1,7 @@
 const express = require("express");
 const { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
-    getAllStories, createStory, addChapter, getChaptersByStoryId } = require("../controllers/story.controller");
+    getAllStories, createStory, addChapter, getChaptersByStoryId,getStoryById
+    } = require("../controllers/story.controller");
 
 const router = express.Router();
 
@@ -20,6 +21,6 @@ router.post("/stories/:storyId/chapters", addChapter);
 // Route to get chapters by story ID
 router.get("/stories/:storyId/chapters", getChaptersByStoryId);
 
-
+router.get('/story/:story_id', getStoryById);
 
 module.exports = router;
