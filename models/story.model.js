@@ -7,7 +7,7 @@ const storySchema = new mongoose.Schema({
     cover: { type: String, required: true },
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User", // Reference to the User model
+        ref: "User",
         required: true
     },
     synopsis: { type: String, required: true },
@@ -36,7 +36,7 @@ const storySchema = new mongoose.Schema({
     language: { type: String, required: true },
     maturityRating: { type: String, required: true },
     wordCount: { type: Number, required: true },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 const Story = mongoose.model("Story", storySchema);

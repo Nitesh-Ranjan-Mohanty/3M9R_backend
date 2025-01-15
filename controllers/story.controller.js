@@ -442,7 +442,38 @@ const getChaptersByStoryId = async (req, res) => {
     }
 };
 
+// Controller to edit a story
+const editStory = async (req, res) => {
+    const { storyId } = req.params;
+    const updates = req.body;
+
+    try {
+        // Find the story by ID and update with new data
+        const story = await Story.findByIdAndUpdate(
+            storyId,
+            updates,
+            { new: true, runValidators: true } // Returns the updated document
+        );
+
+        if (!story) {
+            return res.status(404).json({ message: "Story not found" });
+        }
+
+        res.status(200).json({
+            message: "Story updated successfully",
+            story,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update story",
+            error: error.message,
+        });
+    }
+};
+
+
 module.exports = {
     getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
-    getAllStories, addChapter, createStory, getChaptersByStoryId, getStoryById
+    getAllStories, addChapter, createStory, getChaptersByStoryId, getStoryById,
+    editStory
 };

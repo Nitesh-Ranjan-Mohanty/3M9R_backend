@@ -23,4 +23,6 @@ router.get("/stories/:storyId/chapters", getChaptersByStoryId);
 
 router.get('/story/:story_id', getStoryById);
 
+router.put("/stories/:storyId", editStory);
+
 module.exports = router;
