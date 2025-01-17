@@ -16,6 +16,9 @@ const getUserData = async (req, res) => {
             "title metrics.reads metrics.likes metrics.comments metrics.shares"
         );
 
+        // Dynamically calculate authored stories count
+        const authoredCount = stories.length;
+
         // Prepare response
         const userData = {
             id: user._id,
@@ -25,7 +28,10 @@ const getUserData = async (req, res) => {
             location: user.location,
             website: user.website,
             badges: user.badges,
-            stats: user.stats,
+            stats: {
+                ...user.stats,
+                authored: authoredCount, // Update authored count
+            },
             achievements: user.achievements,
             interests: user.interests,
             recentActivity: user.recentActivity,
