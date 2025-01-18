@@ -1,7 +1,7 @@
 const Story = require("../models/story.model");
 
 // Default cover image if not provided
-const defaultCoverImage = "https://via.placeholder.com/500x750?text=Lorem+Ipsum";
+const defaultCoverImage = "https://picsum.photos/200/300/?blur";
 
 // Fetch "Continue Reading" stories
 const getContinueReading = async (req, res) => {
