@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
 const storySchema = new mongoose.Schema({
-    id: { type: Number, required: true },
+    id: { type: Number, required: false },
     category: { type: String },
     title: { type: String, required: true },
-    cover: { type: String, required: true },
+    cover: { type: String, required: false },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: false
     },
     synopsis: { type: String, required: true },
     status: { type: String, required: true },
@@ -21,12 +21,12 @@ const storySchema = new mongoose.Schema({
         shares: { type: Number, required: true }
     },
     chapters: [{
-        id: { type: Number, required: true },
-        title: { type: String, required: true },
-        number: { type: Number, required: true },
-        readStatus: { type: Boolean, required: true },
-        content: { type: String, required: true },
-        publishedAt: { type: Date, required: true }
+        id: { type: Number, required: false },
+        title: { type: String, required: false },
+        number: { type: Number, required: false },
+        readStatus: { type: Boolean, required: false },
+        content: { type: String, required: false },
+        publishedAt: { type: Date, required: false }
     }],
     isBookmarked: { type: Boolean, default: false },
     isLiked: { type: Boolean, default: false },
@@ -36,7 +36,7 @@ const storySchema = new mongoose.Schema({
     language: { type: String, required: true },
     maturityRating: { type: String, required: true },
     wordCount: { type: Number, required: true },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
 });
 
 const Story = mongoose.model("Story", storySchema);
