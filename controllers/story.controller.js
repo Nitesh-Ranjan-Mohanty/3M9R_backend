@@ -392,7 +392,7 @@ const createStory = async (req, res) => {
 const addChapter = async (req, res) => {
     try {
         const { storyId } = req.params;
-        const { id, title, number, content, readStatus, publishedAt } = req.body;
+        const {title, content } = req.body;
 
         const story = await Story.findById(storyId);
         if (!story) {
@@ -400,12 +400,11 @@ const addChapter = async (req, res) => {
         }
 
         const newChapter = {
-            id,
             title,
-            number,
+            number:0,
             content,
-            readStatus,
-            publishedAt: publishedAt || new Date(),
+            readStatus:0,
+            publishedAt: new Date(),
         };
 
         story.chapters.push(newChapter);
