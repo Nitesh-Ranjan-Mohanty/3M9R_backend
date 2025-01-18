@@ -342,7 +342,6 @@ const getStoryById = async (req, res) => {
 const createStory = async (req, res) => {
     try {
         const {
-            id,
             category,
             title,
             cover,
@@ -351,11 +350,6 @@ const createStory = async (req, res) => {
             status,
             genres,
             tags,
-            metrics,
-            chapters,
-            rating,
-            publishedAt,
-            lastUpdated,
             language,
             maturityRating,
             wordCount,
@@ -363,7 +357,6 @@ const createStory = async (req, res) => {
         } = req.body;
 
         const newStory = new Story({
-            id,
             category,
             title,
             cover,
@@ -372,19 +365,19 @@ const createStory = async (req, res) => {
             status,
             genres,
             tags,
-            metrics: metrics || {
+            metrics:{
                 reads: 0,
                 likes: 0,
                 comments: 0,
                 shares: 0,
             },
-            chapters: chapters || [],
-            rating,
-            publishedAt: publishedAt || new Date(),
-            lastUpdated: lastUpdated || new Date(),
+            chapters: [],
+            rating:0,
+            publishedAt: new Date(),
+            lastUpdated: new Date(),
             language,
             maturityRating,
-            wordCount,
+            wordCount: wordCount || 0,
             userId,
         });
 
