@@ -40,6 +40,7 @@ const getContinueReading = async (req, res) => {
                     number: chapter.number,
                     readStatus: chapter.readStatus,
                     publishedAt: chapter.publishedAt,
+                    content: chapter?.content
                 })),
                 isBookmarked: story.isBookmarked,
                 isLiked: story.isLiked,
@@ -94,6 +95,7 @@ const getFeaturedStories = async (req, res) => {
                     number: chapter.number,
                     readStatus: chapter.readStatus,
                     publishedAt: chapter.publishedAt,
+                    content: chapter?.content
                 })),
                 isBookmarked: story.isBookmarked,
                 isLiked: story.isLiked,
@@ -149,6 +151,7 @@ const getRecommendedForYou = async (req, res) => {
                     number: chapter.number,
                     readStatus: chapter.readStatus,
                     publishedAt: chapter.publishedAt,
+                    content: chapter?.content
                 })),
                 isBookmarked: story.isBookmarked,
                 isLiked: story.isLiked,
@@ -210,6 +213,7 @@ const getUserStories = async (req, res) => {
                     number: chapter.number,
                     readStatus: chapter.readStatus,
                     publishedAt: chapter.publishedAt,
+                    content: chapter?.content
                 })),
                 isBookmarked: story.isBookmarked,
                 isLiked: story.isLiked,
@@ -265,6 +269,7 @@ const getAllStories = async (req, res) => {
                     number: chapter.number,
                     readStatus: chapter.readStatus,
                     publishedAt: chapter.publishedAt,
+                    content: chapter?.content
                 })),
                 isBookmarked: story.isBookmarked,
                 isLiked: story.isLiked,
@@ -322,6 +327,7 @@ const getStoryById = async (req, res) => {
                 number: chapter.number,
                 readStatus: chapter.readStatus,
                 publishedAt: chapter.publishedAt,
+                content: chapter?.content
             })),
             isBookmarked: story.isBookmarked,
             isLiked: story.isLiked,
