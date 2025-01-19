@@ -483,7 +483,7 @@ const deleteChapter = async (req, res) => {
 
         // Find the chapter index
         const chapterIndex = story.chapters.findIndex(
-            (chapter) => chapter.id === parseInt(chapterId)
+            (chapter) => chapter._id === chapterId
         );
 
         if (chapterIndex === -1) {
