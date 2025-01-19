@@ -469,9 +469,59 @@ const editStory = async (req, res) => {
     }
 };
 
+// Delete Chapter Controller
+const deleteChapter = async (req, res) => {
+    const { storyId, chapterId } = req.params;
+
+    try {
+        // Find the story by ID
+        const story = await Story.findById(storyId);
+
+        if (!story) {
+            return res.status(404).json({ message: "Story not found" });
+        }
+
+        // Find the chapter index
+        const chapterIndex = story.chapters.findIndex(
+            (chapter) => chapter.id === parseInt(chapterId)
+        );
+
+        if (chapterIndex === -1) {
+            return res.status(404).json({ message: "Chapter not found" });
+        }
+
+        // Remove the chapter from the chapters array
+        story.chapters.splice(chapterIndex, 1);
+
+        // Save the updated story
+        await story.save();
+
+        res.status(200).json({ message: "Chapter deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+};
+
+// Delete Story Controller
+const deleteStory = async (req, res) => {
+    const { storyId } = req.params;
+
+    try {
+        // Find and delete the story by ID
+        const story = await Story.findByIdAndDelete(storyId);
+
+        if (!story) {
+            return res.status(404).json({ message: "Story not found" });
+        }
+
+        res.status(200).json({ message: "Story deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+};
 
 module.exports = {
     getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
     getAllStories, addChapter, createStory, getChaptersByStoryId, getStoryById,
-    editStory
+    editStory, deleteChapter, deleteStory
 };

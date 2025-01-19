@@ -25,4 +25,9 @@ router.get('/story/:story_id', getStoryById);
 
 router.put("/stories/:storyId", editStory);
 
+router.delete("/stories/:storyId/chapters/:chapterId", deleteChapter);
+
+// Route to delete a story
+router.delete("/stories/:storyId", deleteStory);
+
 module.exports = router;
