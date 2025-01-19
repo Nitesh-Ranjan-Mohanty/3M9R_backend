@@ -483,9 +483,9 @@ const deleteChapter = async (req, res) => {
 
         // Find the chapter index
         const chapterIndex = story.chapters.findIndex(
-            (chapter) => chapter._id === chapterId
+            (chapter) => chapter?._id?.equals(chapterId?.trim())
         );
-
+        console.log(chapterIndex,chapterId)
         if (chapterIndex === -1) {
             return res.status(404).json({ message: "Chapter not found" });
         }
