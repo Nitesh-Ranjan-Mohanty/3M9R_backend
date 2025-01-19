@@ -1,7 +1,7 @@
 const express = require("express");
 const { getStories, getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
     getAllStories, createStory, addChapter, getChaptersByStoryId, getStoryById, editStory, deleteChapter,
-    deleteStory
+    deleteStory, getChapterByStoryIdAndChapterId, updateChapterByStoryIdAndChapterId
 } = require("../controllers/story.controller");
 
 const router = express.Router();
@@ -30,5 +30,11 @@ router.delete("/stories/:storyId/chapters/:chapterId", deleteChapter);
 
 // Route to delete a story
 router.delete("/stories/:storyId", deleteStory);
+
+router.get('/story/:storyId/chapter/:chapterId', getChapterByStoryIdAndChapterId);
+
+// Route to update a chapter by storyId and chapterId
+router.put('/story/:storyId/chapter/:chapterId', updateChapterByStoryIdAndChapterId);
+
 
 module.exports = router;

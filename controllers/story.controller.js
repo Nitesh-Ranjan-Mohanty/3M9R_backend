@@ -520,8 +520,68 @@ const deleteStory = async (req, res) => {
     }
 };
 
+const getChapterByStoryIdAndChapterId = async (req, res) => {
+    try {
+        const { storyId, chapterId } = req.params;
+
+        // Find the story by storyId
+        const story = await Story.findById(storyId);
+
+        if (!story) {
+            return res.status(404).json({ message: 'Story not found' });
+        }
+
+        // Find the chapter by chapterId
+        const chapter = story.chapters.id(chapterId?.trim());
+
+        if (!chapter) {
+            return res.status(404).json({ message: 'Chapter not found' });
+        }
+
+        return res.status(200).json({ chapter });
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+const updateChapterByStoryIdAndChapterId = async (req, res) => {
+    try {
+        const { storyId, chapterId } = req.params;
+        const { title, content, number, readStatus, publishedAt } = req.body;
+
+        // Find the story by storyId
+        const story = await Story.findById(storyId);
+
+        if (!story) {
+            return res.status(404).json({ message: 'Story not found' });
+        }
+
+        // Find the chapter by chapterId
+        const chapter = story.chapters.id(chapterId?.trim());
+
+        if (!chapter) {
+            return res.status(404).json({ message: 'Chapter not found' });
+        }
+
+        // Update the chapter with the new data
+        if (title) chapter.title = title;
+        if (content) chapter.content = content;
+        if (number) chapter.number = number;
+        if (readStatus !== undefined) chapter.readStatus = readStatus;
+        if (publishedAt) chapter.publishedAt = publishedAt;
+
+        // Save the updated story
+        await story.save();
+
+        return res.status(200).json({ message: 'Chapter updated successfully', chapter });
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+
 module.exports = {
     getContinueReading, getFeaturedStories, getRecommendedForYou, getUserStories,
     getAllStories, addChapter, createStory, getChaptersByStoryId, getStoryById,
-    editStory, deleteChapter, deleteStory
+    editStory, deleteChapter, deleteStory, getChapterByStoryIdAndChapterId, updateChapterByStoryIdAndChapterId
 };
